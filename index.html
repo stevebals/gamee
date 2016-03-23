@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title> room chat</title>    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/united/bootstrap.min.css"  crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>   
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+ </head>
+<body>
+			<div class="container">
+		<div id="conversation"></div>
+			<input id="data" style="width:200px;" />
+			<input type="button" id="datasend" value="send" />
+
+
+
+			<h1> Chat client test</h1>
+			<p>
+				<a href="#" class="rooms" id="room1" data-id="room1">Room1</a> ||
+				<a href="#" class="rooms" id="room2" data-id="room2">Room2</a> ||
+				<a href="#" class="rooms" id="room3" data-id="room3">Room3</a> ||
+				<a href="#" class="rooms" id="room4" data-id="room4">Room4</a> ||
+				<a href="#" class="rooms" id="room5" data-id="room5">Room5</a> 
+			</p>
+			<hr>
+			<input type="text" name="chattext" id="chattext">
+			<a href="#" id="testlink">Chat</a>
+			<div id="roomfull"></div>
+			<div id="onlineusers">Currently online <span class="onlinecount"></span></div>
+			<div>
+				<ul id="chat"> 
+					
+				</ul>		
+			</div>
+	</div>
+<script>
+	var serverUrl = "http://localhost:8080/";
+	var socket = io.connect(serverUrl+'recharge');
+	userid = Math.ceil(Math.random()*10*new Date());
+	$("#roomfull").html('');
+	//var socket = io.connect('http://localhost:8080');
+	$('.rooms').on('click',function(){
+		alert($(this).data('id'));
+		$(this).addClass('active').siblings().removeClass('active');;
+		socket.emit("join", {
+			userId: userid,
+			roomId:$(this).data('id') 
+		});
+	});
+	socket.on('joined', function(username, data, text) {	
+		$('.onlinecount').html(data.roomSize);
+		var dom = "<li><b>" + data.userId + " : </b> "+ text + " joined</li>";
+		$("#chat").append(dom);			
+	});
+	
+	socket.emit("disconnect", {
+		userId: userid,
+		roomId:$('.rooms.active').data('id') 
+	});
+
+
+	socket.on('roomfull', function(username, data, text) {	
+		var dom = "<b>" + data.userId + " : </b> "+ text ;
+		$("#roomfull").html(dom).fadeIn(300).delay(3200).fadeOut(300);			
+	});
+
+	socket.on('updaterooms', function(rooms, current_room) {
+		alert('update rooms');
+		$.each(rooms, function(key, value) {
+			if(value == current_room){
+				$('#rooms').append('<div>' + value + '</div>');
+			}
+			else {
+				$('#rooms').append('<div><a href="#" onclick="switchRoom(\''+value+'\')">' + value + '</a></div>');
+			}
+		});
+	});
+	
+
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<form class="form-signin">
+    <h2 class="form-signin-heading">Please Register</h2>
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required >
+        <p class="usernameAlready btn-error"></p>
+
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+        <label for="inputMobile" class="sr-only">Mobile</label>
+        <input type="text" id="inputMobile" class="form-control" placeholder="Mobile" required>
+
+
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block registerBtn" type="submit">Register</button>
+    <p class="btn-success registerSuccess"></p>
+    <p><a href="#login" class="login">Login</a></p>
+</form>

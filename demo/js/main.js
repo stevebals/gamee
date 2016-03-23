@@ -13,7 +13,7 @@ function(UserModel, Router){
 	var abapp	=	window.abapp	=	window.abapp	|| {};
 	abapp.currentState = window.location.hash.substr(1).trim();
     abapp.userToken='';
-    abapp.serverUrl = 'http://localhost:8080/';
+    abapp.serverUrl = 'https://gamee.herokuapp.com/';
 
 	abapp.displayPage = function(currentPage){
 		console.log(JSON.stringify(currentPage));
